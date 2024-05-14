@@ -1,0 +1,52 @@
+<div style="margin-top: 10vh;">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-around">
+                
+                <div>
+                    <div style="height: 150px; width: 150px; background-color: green; margin-top: 75px;" class="bg-success step" [hidden]="!isFirstStep">
+
+                        <div class="step-inner-text" style="margin-top: 30px; font-size: 36px;">
+                                1
+                        </div>
+                        <div class="step-inner-text" style="font-size: 14px;">
+                                Червоний
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div style="height: 300px; width: 300px; padding: 10px 30px;" class="bg-danger step">
+
+                    <div class="step-inner-text" style="margin-top: 60px; font-size: 72px;">
+                            1
+                    </div>
+                    <div class="step-inner-text" style="font-size: 28px;">
+                            Червоний
+                    </div>
+                </div>
+
+                <div style="height: 150px; width: 150px; background-color: red; margin-top: 75px;" class="bg-danger step">
+                    
+                    <div class="step-inner-text" style="margin-top: 30px; font-size: 36px;">
+                            1
+                    </div>
+                    <div class="step-inner-text" style="font-size: 14px;">
+                            Червоний
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5" *ngIf="role === ROLES.INSTRUCTOR">
+        <div class="col-12">
+            <div>
+                <button (click)="end()" class="btn btn-warning w-100" style="font-size: 48px; font-weight: bold;">
+                    Закінчити роботу
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+<div style="margin-top: 10vh;">
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <h1>
+                    Кращий результат
+                </h1>
+                <div  class="d-flex">
+                    <div *ngFor="let item of bestResults" class="d-flex">
+                        <div *ngIf="item.arrivalTime" style="border: 1px solid black; text-align: center; height: 80px; margin-top: 10px; width: 100px; font-weight: bold;">
+                            <div>
+                                {{item.pilotName}}
+                            </div>
+                            <div>
+                                {{item.arrivalTime / 1000}} с.
+                            </div>
+                        </div>
+                        <div style="height: 100px; width: 150px; text-align: center; border: 1px solid black; font-weight: bold;" class="bg-danger text-white">
+                            <div style="margin-top: 20px;">
+                                {{item.pointName}}
+                            </div>
+                            <div>
+                                {{item.pointColor}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <h1>
+                    Ваш результат
+                </h1>
+                <div  class="d-flex">
+                    <div *ngFor="let item of myResults" class="d-flex">
+                        <div *ngIf="item.arrivalTime" style="border: 1px solid black; text-align: center; height: 80px; margin-top: 10px; width: 100px; font-weight: bold;">
+                            <div>
+                                {{item.pilotName}}
+                            </div>
+                            <div>
+                                {{item.arrivalTime / 1000}} с.
+                            </div>
+                        </div>
+                        <div style="height: 100px; width: 150px; text-align: center; border: 1px solid black; font-weight: bold;" class="bg-success text-white">
+                            <div style="margin-top: 20px;">
+                                {{item.pointName}}
+                            </div>
+                            <div>
+                                {{item.pointColor}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="font-weight-bold" style="font-size: 22px;">
+                <div>
+                    Пройдено {{pointsMy}} точок (зараховано {{ pointsCounted }} точок)
+                </div>
+                <div>
+                    Ваш час: 5хв 31 с. <span class="text-danger">(+ 3с.)</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</div>

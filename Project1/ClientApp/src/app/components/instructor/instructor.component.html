@@ -1,0 +1,154 @@
+<div style="margin-top: 10vh;">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-around">
+                <button style="font-size: 42px;" class="btn btn-primary" (click)="openSettings()">
+                    Налаштування
+                </button>
+    
+                <button style="font-size: 42px;" class="btn btn-primary" (click)="start()">
+                    Почати програму
+                </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isSettingsOpened" class="row" style="margin-top: 12px;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Налаштування точок</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <!-- <th>
+                                Айді
+                            </th> -->
+                            <th>
+                                Назва об'єкту
+                            </th>
+                            <th>
+                                Конструкція об'єкту
+                            </th>
+                            <th>
+                                Цифра
+                            </th>
+                            <th>
+                                Колір
+                            </th>
+                            <th>
+                                Активна
+                            </th>
+                            <th>
+                                Редагування
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let point of points">
+                                <!-- <td>
+                                    {{point.id}}
+                                </td> -->
+
+                                <td *ngIf="point.id !== editId">
+                                    {{ point.name }}
+                                </td>
+                                <td *ngIf="point.id === editId">
+                                    <input [(ngModel)]="point.name" type="text" class="form-control">
+                                </td>
+
+                                <td *ngIf="point.id !== editId">
+                                    {{ point.constructionType }}
+                                </td>
+                                <td *ngIf="point.id === editId">
+                                    <input [(ngModel)]="point.constructionType" type="text" class="form-control">
+                                </td>
+
+                                <td *ngIf="point.id !== editId">
+                                    {{ point.number }}
+                                </td>
+                                <td *ngIf="point.id === editId">
+                                    <input [(ngModel)]="point.number" type="text" class="form-control">
+                                </td>
+
+                                <td *ngIf="point.id !== editId">
+                                    {{point.color}}
+                                </td>
+                                <td *ngIf="point.id === editId">
+                                    <input [(ngModel)]="point.color" type="text" class="form-control">
+                                </td>
+                                
+                                <td class="text-center">
+                                    <label class="custom-control custom-checkbox custom-control-inline">
+                                        <input [disabled]="point.id !== editId" [(ngModel)]="point.isEnabled" type="checkbox" style="width: 20px; height:20px;" class="custom-control-input"><span class="custom-control-label"></span>
+                                    </label>
+                                </td>
+
+
+                                <td *ngIf="point.id !== editId">
+                                    <button (click)="enterEditMode(point.id)">
+                                        Змінити
+                                    </button>
+                                </td>
+                                <td *ngIf="point.id === editId">
+                                    <button (click)="savePoint(point.id)">
+                                        Зберегти
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- <td>
+                                    <input [(ngModel)]="id" type="text" class="form-control" placeholder="id">
+                                </td> -->
+                                <td>
+                                    <input [(ngModel)]="name" type="text" class="form-control" placeholder="name">
+                                </td>
+                                <td>
+                                    <input [(ngModel)]="constructionType" type="text" class="form-control" placeholder="constructionType">
+                                </td>
+                                <td>
+                                    <input [(ngModel)]="number" type="number" class="form-control" placeholder="number">
+                                </td>
+                                
+                                <td>
+                                    <input [(ngModel)]="color" type="text" class="form-control"placeholder="color">
+                                </td>
+
+                                <td class="text-center">
+                                    <label class="custom-control custom-checkbox custom-control-inline">
+                                        <input [(ngModel)]="isEnabled" type="checkbox" style="width: 20px; height:20px;" class="custom-control-input"><span class="custom-control-label"></span>
+                                    </label>
+                                </td>
+                                
+                                <td>
+                                    <button class="btn btn-success" (click)="addPoint()">
+                                        Add
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width: 400px; margin: 0 auto;">
+        <div class="row">
+            <div class="col-12">
+                <div>
+                    <label class="col-form-label">Введіть довжину кола</label>
+                    <input
+                      [(ngModel)]="pathLength"
+                      type="text"
+                      class="form-control"
+                    />
+                </div>
+                <div >
+                    <button class="btn btn-primary w-100" (click)="setPathLenght()">
+                        Підтвердити
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
