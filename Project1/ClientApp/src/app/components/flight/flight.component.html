@@ -1,38 +1,52 @@
 <div style="margin-top: 10vh;">
-    <div class="row">
+    <div class="row" *ngIf="userName">
+        <div class="col-12">
+            <div class="d-flex justify-content-center">
+                <h1>
+                    Привіт {{userName}}
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isStarted">
+        <h1 class="text-center">
+            Очікуємо інструктора
+        </h1>
+    </div>
+    <div *ngIf="isStarted" class="row">
         <div class="col-12">
             <div class="d-flex justify-content-around">
                 
-                <div>
-                    <div style="height: 150px; width: 150px; background-color: green; margin-top: 75px;" class="bg-success step" [hidden]="!isFirstStep">
+                <div style="width: 150px;">
+                    <div style="height: 150px;  background-color: green; margin-top: 75px;" class="bg-success step" [hidden]="steps.prev == undefined">
 
                         <div class="step-inner-text" style="margin-top: 30px; font-size: 36px;">
-                                1
+                            {{steps.prev?.number}}
                         </div>
                         <div class="step-inner-text" style="font-size: 14px;">
-                                Червоний
+                            {{steps.prev?.color}}
                         </div>
                     </div>
                 </div>
                 
 
-                <div style="height: 300px; width: 300px; padding: 10px 30px;" class="bg-danger step">
+                <div (click)="makeStep()" style="height: 300px; width: 300px; padding: 10px 30px;" class="bg-danger step">
 
-                    <div class="step-inner-text" style="margin-top: 60px; font-size: 72px;">
-                            1
+                    <div  class="step-inner-text" style="margin-top: 60px; font-size: 72px;">
+                            {{steps.current?.number ?? '0'}}
                     </div>
-                    <div class="step-inner-text" style="font-size: 28px;">
-                            Червоний
+                    <div  class="step-inner-text" style="font-size: 28px;">
+                            {{steps.current?.color ?? '0'}}
                     </div>
                 </div>
 
                 <div style="height: 150px; width: 150px; background-color: red; margin-top: 75px;" class="bg-danger step">
                     
                     <div class="step-inner-text" style="margin-top: 30px; font-size: 36px;">
-                            1
+                        {{steps.next?.number}}
                     </div>
                     <div class="step-inner-text" style="font-size: 14px;">
-                            Червоний
+                        {{steps.next?.color}}
                     </div>
 
                 </div>
@@ -40,7 +54,8 @@
             </div>
         </div>
     </div>
-    <div class="row mt-5" *ngIf="role === ROLES.INSTRUCTOR">
+    <!-- Replace role -->
+    <div class="row mt-5" *ngIf="role === ROLES.PILOT">
         <div class="col-12">
             <div>
                 <button (click)="end()" class="btn btn-warning w-100" style="font-size: 48px; font-weight: bold;">

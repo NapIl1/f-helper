@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { PilotComponent } from './components/pilot/pilot.component';
 import { FlightComponent } from './components/flight/flight.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
+import { FlightHubService } from './services/flight-hub.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [FlightHubService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

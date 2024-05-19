@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ROLES } from 'src/app/consts/consts';
+import { Construction } from 'src/app/models/construction';
 import { Point } from 'src/app/models/point.model';
+import { FlightHubService } from 'src/app/services/flight-hub.service';
+import { UserService } from 'src/app/services/user.service';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface PointResult {
@@ -14,7 +19,7 @@ export interface PointResult {
 })
 export class PilotComponent implements OnInit {
 
-  nickname: string = '';
+  userName: string = '';
 
   points: Point[] = [{
     id: uuidv4(),
@@ -46,9 +51,25 @@ export class PilotComponent implements OnInit {
   now = Date.now();
   isFinished = false;
 
-  ngOnInit(): void {
-    this.selectedPoint = this.points[Math.floor(Math.random() * this.points.length)];
+  constructor(
+    private flightHubNotification: FlightHubService,
+    private userService: UserService,
+    private router: Router){
+
   }
+    
+  async ngOnInit(): Promise<void> {
+    // await this.flightHubNotification.startConnection();
+    this.selectedPoint = this.points[Math.floor(Math.random() * this.points.length)];
+    // this.flightHubNotification.stepCompletedNotificationEmitter.subscribe(x => this.test(x));
+  }
+
+  start() {
+    this.userService.login(this.userName);
+    this.router.navigate(['flight/' + ROLES.PILOT]);
+  }
+
+  // TODO: Remove later
 
   path: any[] = [
 
@@ -60,7 +81,13 @@ export class PilotComponent implements OnInit {
   totalMy = 0;
   totalDiff = 0;
 
-  pointCompleted() {
+  test(smth: Construction){
+    console.log('pilot')
+    console.log(smth);
+  }
+
+  async pointCompleted() {
+    this.flightHubNotification.getNextFlightConstructionStep();
 
     this.path.push({
       pointId: this.selectedPoint!.id,

@@ -1,11 +1,12 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
+using MongoDB.Bson;
 
 namespace FHelper.Models;
 
+[SuppressMessage("ReSharper", "InconsistentNaming")]
 public class ConstructionList
 {
-    [BsonId]
-    public string Id { get; set; }
+    public ObjectId _id { get; set; }
 
-    public IEnumerable<ConstructionDto> Constructions { get; set; }
+    public IEnumerable<Construction> constructions { get; set; }
 }

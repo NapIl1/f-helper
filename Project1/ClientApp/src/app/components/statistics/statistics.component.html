@@ -66,10 +66,20 @@
                     Пройдено {{pointsMy}} точок (зараховано {{ pointsCounted }} точок)
                 </div>
                 <div>
-                    Ваш час: 5хв 31 с. <span class="text-danger">(+ 3с.)</span>
+                    Ваш час: {{myTime}} ms. <span class="text-danger">(+ 3с.)</span>
                 </div>
             </div>
             
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <button class="btn btn-success" (click)="saveResults()">
+                    Зберегти результат
+                </button>
+            </div>
         </div>
     </div>
 

@@ -46,58 +46,58 @@
                         <tbody>
                             <tr *ngFor="let point of points">
                                 <!-- <td>
-                                    {{point.id}}
+                                    {{point.constructionId}}
                                 </td> -->
 
-                                <td *ngIf="point.id !== editId">
+                                <td *ngIf="point.constructionId !== editId">
                                     {{ point.name }}
                                 </td>
-                                <td *ngIf="point.id === editId">
+                                <td *ngIf="point.constructionId === editId">
                                     <input [(ngModel)]="point.name" type="text" class="form-control">
                                 </td>
 
-                                <td *ngIf="point.id !== editId">
+                                <td *ngIf="point.constructionId !== editId">
                                     {{ point.constructionType }}
                                 </td>
-                                <td *ngIf="point.id === editId">
+                                <td *ngIf="point.constructionId === editId">
                                     <input [(ngModel)]="point.constructionType" type="text" class="form-control">
                                 </td>
 
-                                <td *ngIf="point.id !== editId">
+                                <td *ngIf="point.constructionId !== editId">
                                     {{ point.number }}
                                 </td>
-                                <td *ngIf="point.id === editId">
+                                <td *ngIf="point.constructionId === editId">
                                     <input [(ngModel)]="point.number" type="text" class="form-control">
                                 </td>
 
-                                <td *ngIf="point.id !== editId">
+                                <td *ngIf="point.constructionId !== editId">
                                     {{point.color}}
                                 </td>
-                                <td *ngIf="point.id === editId">
+                                <td *ngIf="point.constructionId === editId">
                                     <input [(ngModel)]="point.color" type="text" class="form-control">
                                 </td>
                                 
                                 <td class="text-center">
                                     <label class="custom-control custom-checkbox custom-control-inline">
-                                        <input [disabled]="point.id !== editId" [(ngModel)]="point.isEnabled" type="checkbox" style="width: 20px; height:20px;" class="custom-control-input"><span class="custom-control-label"></span>
+                                        <input [disabled]="point.constructionId !== editId" [(ngModel)]="point.isEnabled" type="checkbox" style="width: 20px; height:20px;" class="custom-control-input"><span class="custom-control-label"></span>
                                     </label>
                                 </td>
 
 
-                                <td *ngIf="point.id !== editId">
-                                    <button (click)="enterEditMode(point.id)">
+                                <td *ngIf="point.constructionId !== editId">
+                                    <button (click)="enterEditMode(point.constructionId)">
                                         Змінити
                                     </button>
                                 </td>
-                                <td *ngIf="point.id === editId">
-                                    <button (click)="savePoint(point.id)">
+                                <td *ngIf="point.constructionId === editId">
+                                    <button (click)="savePoint(point.constructionId)">
                                         Зберегти
                                     </button>
                                 </td>
                             </tr>
                             <tr>
                                 <!-- <td>
-                                    <input [(ngModel)]="id" type="text" class="form-control" placeholder="id">
+                                    <input [(ngModel)]="constructionId" type="text" class="form-control" placeholder="constructionId">
                                 </td> -->
                                 <td>
                                     <input [(ngModel)]="name" type="text" class="form-control" placeholder="name">

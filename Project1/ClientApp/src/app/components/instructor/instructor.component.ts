@@ -24,6 +24,7 @@ export class InstructorComponent implements OnInit {
 
   points?: Construction[];
 
+
   constructor(
     private flightHubNotification: FlightHubService,
     private router: Router) {
@@ -31,16 +32,15 @@ export class InstructorComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.flightHubNotification.startConnection();
-    // this.flightHubNotification.nextConstruction();
-    const result = await this.flightHubNotification.getConstructions();
-    console.log(result)
-    this.points = result.constructions;
-    this.constructionsId = result._id;
-    this.flightHubNotification.stepCompletedNotification.subscribe(x => this.test(x))
+    // this.flightHubNotification.startAllSubscriptionsToHubEvents();
+    this.points = await this.flightHubNotification.getConstructions();
+    // this.flightHubNotification.flightStarteddNotificationEmitter.subscribe(x => this.test(x))
   }
 
   test(smth:any){
-    console.log(smth)
+    console.log('test test test')
+    //this.flightHubNotification.flightStarteddNotificationEmitter?.unsubscribe();
+    
   }
 
   isSettingsOpened = true;
@@ -56,13 +56,9 @@ export class InstructorComponent implements OnInit {
   }
 
   async savePoint(id: string | undefined) {
-    // console.log('savePoint');
-    // var res = await this.flightHubNotification.getNextStepNotification();
-    // console.log(res);
-    // // this.http.put()
-    this.editId = '';
+    await this.flightHubNotification.updateConstruction(this.points?.find(x => x.constructionId == this.editId));
 
-    await this.flightHubNotification.updateConstruction(this.points, this.constructionsId);
+    this.editId = '';
   }
 
   async addPoint() {
@@ -70,19 +66,20 @@ export class InstructorComponent implements OnInit {
       this.points = [];
     }
 
-    this.points.push({
-      id: uuidv4(),
-      isEnabled: this.isEnabled,
+    const point: Construction = {
+      constructionId: uuidv4(),
       color: this.color,
       name: this.name,
       number: this.number,
       constructionType: this.constructionType,
       description: this.description,
-    })
+      isEnabled: true,
+    };
 
-    await this.flightHubNotification.updateConstruction(this.points, this.constructionsId);
+    this.points.push(point);
+
+    await this.flightHubNotification.addConstruction(point);
   }
-
   // START
 
   isStarted = false;
@@ -91,15 +88,11 @@ export class InstructorComponent implements OnInit {
   pathLength: number = 0;
 
 
-  start() {
+  async start() {
     this.isStarted = true;
     this.isSettingsOpened = false;
-    // this.http.post()
-    // alert('Started!');
+    // await this.flightHubNotification.startFlight();
     this.router.navigate(['flight/' + ROLES.INSTRUCTOR]);
-
-    //this.selectedPoint = this.points[Math.floor(Math.random() * this.points.length)];
-
   }
 
   setPathLenght() {

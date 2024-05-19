@@ -1,14 +1,17 @@
-﻿using MongoDB.Bson;
+﻿using System.Diagnostics.CodeAnalysis;
+using MongoDB.Bson;
 
 namespace FHelper.Models;
 
+[SuppressMessage("ReSharper", "InconsistentNaming")]
 public class Construction
 {
-    public BsonString Id { get; set; }
-    public BsonInt32 Number { get; set; }
-    public BsonString Name { get; set; }
-    public BsonString Description { get; set; }
-    public BsonString Color { get; set; }
-    public BsonString ConstructionType { get; set; }
-    public BsonBoolean IsEnabled { get; set; }
+    public ObjectId? _id { get; set; }
+    public string? constructionId { get; set; }
+    public int? number { get; set; }
+    public string? name { get; set; }
+    public string? description { get; set; }
+    public string? color { get; set; }
+    public string? constructionType { get; set; }
+    public bool? isEnabled { get; set; }
 }

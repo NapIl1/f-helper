@@ -1,5 +1,7 @@
 using FHelper;
+using FHelper.DataAccess;
 using FHelper.Hubs;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,15 @@ builder.Services.AddSignalR().AddHubOptions<FlightHub>(options =>
 {
     options.EnableDetailedErrors = true;
 });
+
+builder.Services.AddDbContext<MongoDbContext>(options =>
+{
+    options.UseMongoDB(builder.Configuration["ConnectionStrings:Server"]!,
+        builder.Configuration["ConnectionStrings:DatabaseName"]!);
+});
+
+builder.Services.AddScoped<IConstructionRepository, ConstructionRepository>();
+builder.Services.AddScoped<IStatisticsRepository, StatisticRepository>();
 
 BsonSerializer.RegisterSerializer(new StringObjectIdConverter());
 
