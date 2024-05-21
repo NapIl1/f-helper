@@ -19,10 +19,12 @@ public class ConstructionRepository : IConstructionRepository
     private readonly MongoDbContext _mongoDbContext;
     private readonly string _connectionString;
     private readonly string _databaseName;
+    private Random _random;
 
     public ConstructionRepository(MongoDbContext mongoDbContext)
     {
         _mongoDbContext = mongoDbContext;
+        _random = new Random();
         // _connectionString = configuration["ConnectionStrings:Server"] ?? throw new KeyNotFoundException();
         // _databaseName = configuration["ConnectionStrings:DatabaseName"] ?? throw new KeyNotFoundException();
     }
@@ -41,8 +43,7 @@ public class ConstructionRepository : IConstructionRepository
         // var client = new MongoClient(_connectionString);
         // await using var db = MongoDbContext.Create(client.GetDatabase(_databaseName));
         var totalDocuments = await _mongoDbContext.Constructions.CountAsync();
-        var random = new Random();
-        var randomIndex = random.Next(totalDocuments);
+        var randomIndex = _random.Next(totalDocuments);
         var randomDocument = await _mongoDbContext.Constructions.Skip(randomIndex).FirstAsync();
 
         return randomDocument;

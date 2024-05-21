@@ -11,6 +11,6 @@ public partial class FlightHub
 
     public async Task UpdateStatistic(StatisticsList statisticsList)
     {
-        await _statisticsRepository.UpdateStatistics(statisticsList);
+        //await _statisticsRepository.UpdateStatistics(statisticsList);
     }
 }

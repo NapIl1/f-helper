@@ -7,13 +7,17 @@
                 </h1>
                 <div  class="d-flex">
                     <div *ngFor="let item of bestResults" class="d-flex">
-                        <div *ngIf="item.arrivalTime" style="border: 1px solid black; text-align: center; height: 80px; margin-top: 10px; width: 100px; font-weight: bold;">
+                        <div style="border: 1px solid black; text-align: center; height: 80px; margin-top: 10px; width: 100px; font-weight: bold;">
                             <div>
                                 {{item.pilotName}}
                             </div>
-                            <div>
+                            <div *ngIf="item.arrivalTime">
                                 {{item.arrivalTime / 1000}} с.
                             </div>
+                            <div *ngIf="!item.arrivalTime">
+                                -
+                            </div>
+
                         </div>
                         <div style="height: 100px; width: 150px; text-align: center; border: 1px solid black; font-weight: bold;" class="bg-danger text-white">
                             <div style="margin-top: 20px;">

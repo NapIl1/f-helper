@@ -4,6 +4,7 @@ import { ROLES } from 'src/app/consts/consts';
 import { Construction } from 'src/app/models/construction';
 import { Point } from 'src/app/models/point.model';
 import { FlightHubService } from 'src/app/services/flight-hub.service';
+import { StatisticsService } from 'src/app/services/statistics.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -27,6 +28,7 @@ export class InstructorComponent implements OnInit {
 
   constructor(
     private flightHubNotification: FlightHubService,
+    private statsService: StatisticsService,
     private router: Router) {
   }
 
@@ -92,7 +94,14 @@ export class InstructorComponent implements OnInit {
     this.isStarted = true;
     this.isSettingsOpened = false;
     // await this.flightHubNotification.startFlight();
-    this.router.navigate(['flight/' + ROLES.INSTRUCTOR]);
+
+
+    if (this.pathLength > 0) {
+      this.statsService.savePathLength(this.pathLength);
+      this.router.navigate(['flight/' + ROLES.INSTRUCTOR]);
+    }
+
+
   }
 
   setPathLenght() {

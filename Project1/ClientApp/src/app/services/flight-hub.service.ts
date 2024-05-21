@@ -1,18 +1,18 @@
 import { Injectable, Output, EventEmitter } from "@angular/core";
 import { API_URL } from "../consts/consts";
 import * as signalR from "@aspnet/signalr";
-import { Construction } from "../models/construction";
+import { Construction, FlightStartModel } from "../models/construction";
 import { ConstructionResponse } from "../models/constructions.hub.response";
 import { BehaviorSubject, Subject } from "rxjs";
-import { FlightUserResult } from "../models/flightStepResult.model";
+import { FlightEndStats, FlightUserResult } from "../models/flightStepResult.model";
 
 @Injectable({
     providedIn: 'root'
 })
 export class FlightHubService {
     private stepCompletedSubject = new Subject<Construction>();
-    private flightStartedSubject = new Subject<Construction[]>();
-    private flightEndedSubject = new Subject<FlightUserResult>();
+    private flightStartedSubject = new Subject<FlightStartModel>();
+    private flightEndedSubject = new Subject<FlightEndStats>();
 
     public stepCompleted$ = this.stepCompletedSubject.asObservable();
     public flightStarted$ = this.flightStartedSubject.asObservable();
@@ -20,6 +20,8 @@ export class FlightHubService {
 
     private readonly FLIGHT_HUB_NAME = API_URL + "flightNotification";
     private hubConnection?: signalR.HubConnection;
+
+    private isInit = false;
 
     constructor() {
     }
@@ -52,8 +54,8 @@ export class FlightHubService {
     //#endregion
 
     //#region flight actions
-    public async startFlight() : Promise<void>{
-        await this.hubConnection?.invoke('FlightStartedNotification')
+    public async startFlight(length: number) : Promise<void>{
+        await this.hubConnection?.invoke('FlightStartedNotification', length);
     }
 
     public async endFlight(userResult: FlightUserResult) : Promise<void>{
@@ -66,7 +68,6 @@ export class FlightHubService {
     }
 
     //#endregion
-
     //#region statistics
     public async getStatistics() {
         var res = await this.hubConnection?.invoke('GetStatistics');
@@ -75,6 +76,12 @@ export class FlightHubService {
     }
     //#endregion
 
+    public unsubscribeFromHub() {
+        this.hubConnection?.off('GetNextStepNotification');
+        this.hubConnection?.off('FlightStartedNotification');
+        this.hubConnection?.off('FlightEndedNotification');
+    }
+
     public initStepCompletedListener(): void {
         this.hubConnection?.on('GetNextStepNotification', (nextConstruction: Construction) => {
             this.stepCompletedSubject.next(nextConstruction);
@@ -82,14 +89,14 @@ export class FlightHubService {
     }
 
     public initFlightStartedListener(): void {
-        this.hubConnection?.on('FlightStartedNotification', (constructions: Construction[]) => {
-            this.flightStartedSubject.next(constructions);
+        this.hubConnection?.on('FlightStartedNotification', (startModel: FlightStartModel) => {
+            this.flightStartedSubject.next(startModel);
         });
     }
 
     public initFlightEndedListener(): void {
-        this.hubConnection?.on('FlightEndedNotification', (result: FlightUserResult) => {
-            this.flightEndedSubject.next(result);
+        this.hubConnection?.on('FlightEndedNotification', (endStats: FlightEndStats) => {
+            this.flightEndedSubject.next(endStats);
         });
     }
 

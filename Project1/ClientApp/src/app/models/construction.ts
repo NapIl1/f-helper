@@ -8,3 +8,8 @@ export interface Construction{
     constructionType?: string,
     isEnabled?: boolean    
 }
+
+export interface FlightStartModel {
+    length: number,
+    constructions: Construction[]
+};

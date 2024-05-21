@@ -19,32 +19,7 @@ export interface StatisticsItem {
 })
 export class StatisticsComponent implements OnInit {
 
-  bestResults: StatisticsItem[] = [
-    {
-      pointName: 1,
-      pointColor: 'r',
-      arrivalTime: null,
-      pilotName: 'Vasyan'
-    },
-    {
-      pointName: 2,
-      pointColor: 'g',
-      arrivalTime: 1000,
-      pilotName: 'Vasyan'
-    },
-    {
-      pointName: 3,
-      pointColor: 'r',
-      arrivalTime: 1500,
-      pilotName: 'Vasyan'
-    },
-    {
-      pointName: 4,
-      pointColor: 'g',
-      arrivalTime: 2500,
-      pilotName: 'Vasyan'
-    }
-  ];
+  bestResults: StatisticsItem[] = [ ];
 
   myResults: StatisticsItem[] = [];
   points: Construction[] = [];
@@ -52,7 +27,7 @@ export class StatisticsComponent implements OnInit {
   pointsCounted = 0;
 
   //get from stats
-  pointsMy = 8;
+  pointsMy = 0;
 
   myTime = 0;
 
@@ -64,33 +39,64 @@ export class StatisticsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.hubService.startConnection();
-    const bestResults = await this.hubService.getStatistics();
+    // const bestResults = await this.hubService.getStatistics();
     this.points = await this.hubService.getConstructions();
 
-    if (bestResults) {
+    // if (bestResults) {
 
-    }
+    // }
 
-    console.log(bestResults);
+    // console.log(bestResults);
 
     //get current flight stats
     this.statsService.getStatistics$.subscribe(stats => {
       console.log(stats);
-      stats?.results.forEach(x => {
+      stats?.userResult.results.forEach(x => {
 
         this.myResults.push({
-          pilotName: stats.userName,
+          pilotName: stats?.userResult.userName,
           arrivalTime: x.time,
           pointColor: this.points.find(p => p.constructionId == x.toConstructionId)?.color ?? '',
           pointName: this.points.find(p => p.constructionId == x.toConstructionId)?.number ?? 0
         });
-
-        this.pointsCounted++;
+        this.pointsMy++;
+        
         this.myTime += x.time;
 
-      })
+        var br = stats.bestResult.statistics.find(b => b.fromConstructionId === x.fromConstructionId && b.toConstructionId === x.toConstructionId);
+
+        if(br) {
+          this.pointsCounted++;
+          this.bestResults.push({
+            pilotName: br.bestUserNickName,
+            arrivalTime: br.bestUserTime,
+            pointColor: this.points.find(p => p.constructionId == x.toConstructionId)?.color ?? '',
+            pointName: this.points.find(p => p.constructionId == x.toConstructionId)?.number ?? 0
+          });
+        } else {
+          this.bestResults.push({
+            pilotName: "",
+            arrivalTime: null,
+            pointColor: this.points.find(p => p.constructionId == x.toConstructionId)?.color ?? '',
+            pointName: this.points.find(p => p.constructionId == x.toConstructionId)?.number ?? 0
+          });
+        }
+        
+
+      });
+
+      // stats?.bestResult.statistics.forEach(x => {
+      //   this.bestResults.push({
+      //     pilotName: x.bestUserNickName,
+      //     arrivalTime: x.bestUserTime,
+      //     pointColor: this.points.find(p => p.constructionId == x.toConstructionId)?.color ?? '',
+      //     pointName: this.points.find(p => p.constructionId == x.toConstructionId)?.number ?? 0
+      //   });
+      // });
 
     })
+
+
   }
 
   public saveResults() {

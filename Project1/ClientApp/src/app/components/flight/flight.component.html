@@ -13,6 +13,11 @@
             Очікуємо інструктора
         </h1>
     </div>
+    <div *ngIf="isStarted">
+        <h1 class="text-center">
+            Крок {{currentStep}} з {{pathLength}}
+        </h1>
+    </div>
     <div *ngIf="isStarted" class="row">
         <div class="col-12">
             <div class="d-flex justify-content-around">
@@ -40,16 +45,19 @@
                     </div>
                 </div>
 
-                <div style="height: 150px; width: 150px; background-color: red; margin-top: 75px;" class="bg-danger step">
+                <div style="width: 150px;">
+                    <div style="height: 150px; background-color: red; margin-top: 75px;" class="bg-danger step" [hidden]="steps.next == undefined">
                     
-                    <div class="step-inner-text" style="margin-top: 30px; font-size: 36px;">
-                        {{steps.next?.number}}
+                        <div class="step-inner-text" style="margin-top: 30px; font-size: 36px;">
+                            {{steps.next?.number}}
+                        </div>
+                        <div class="step-inner-text" style="font-size: 14px;">
+                            {{steps.next?.color}}
+                        </div>
+    
                     </div>
-                    <div class="step-inner-text" style="font-size: 14px;">
-                        {{steps.next?.color}}
-                    </div>
-
                 </div>
+                
 
             </div>
         </div>
