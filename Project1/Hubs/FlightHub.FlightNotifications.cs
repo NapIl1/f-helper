@@ -31,6 +31,11 @@ public partial class FlightHub
         await Clients.All.SendAsync("GetNextStepNotification", randomConstruction);
     }
 
+    public async Task PilotEnteredNotification(string pilotUserName)
+    {
+        await Clients.All.SendAsync("PilotEnteredNotification", pilotUserName);
+    }
+
     public async Task FlightStartedNotification(string length)
     {
         var randomConstruction1 = await _constructionRepository.GetRandomConstruction();

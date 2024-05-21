@@ -68,9 +68,7 @@ export class FlightComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if (this.role === ROLES.PILOT) {
-        this.userName = this.userService.getUserName();
-      }
+      
 
       const flightStartedSub = this.flightHubService.flightStarted$.subscribe((startModel: FlightStartModel) => this.flightStarted(startModel));
       const nextStepSub = this.flightHubService.stepCompleted$.subscribe((nextConstruction: Construction) => this.changeSteps(nextConstruction));
@@ -80,13 +78,24 @@ export class FlightComponent implements OnInit, OnDestroy {
       this.subs.push(nextStepSub);
       this.subs.push(flightEndedSub);
 
+      if (this.role === ROLES.PILOT) {
+        this.userName = this.userService.getUserName();
+
+        if (this.userName) {
+          await this.flightHubService.pilotEntered(this.userName);
+        }
+      }
+
       if (this.role === ROLES.INSTRUCTOR) {
 
-        this.statsService.getPathLength$.subscribe(async length => {
+        const pathLengthSub = this.statsService.getPathLength$.subscribe(async length => {
+          console.log('started', length);
           if(length > 0) {
             await this.flightHubService.startFlight(length);
           }
         });
+
+        this.subs.push(pathLengthSub);
 
       }
 

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ROLES } from 'src/app/consts/consts';
 import { Construction } from 'src/app/models/construction';
 import { Point } from 'src/app/models/point.model';
@@ -12,7 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
   templateUrl: './instructor.component.html',
   styleUrls: ['./instructor.component.scss']
 })
-export class InstructorComponent implements OnInit {
+export class InstructorComponent implements OnInit, OnDestroy {
 
   id: string = '';
   name: string = '';
@@ -25,6 +26,9 @@ export class InstructorComponent implements OnInit {
 
   points?: Construction[];
 
+  pilotName?: string;
+
+  subs: Subscription[] = [];
 
   constructor(
     private flightHubNotification: FlightHubService,
@@ -32,17 +36,23 @@ export class InstructorComponent implements OnInit {
     private router: Router) {
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.flightHubNotification.startConnection();
-    // this.flightHubNotification.startAllSubscriptionsToHubEvents();
-    this.points = await this.flightHubNotification.getConstructions();
-    // this.flightHubNotification.flightStarteddNotificationEmitter.subscribe(x => this.test(x))
+  ngOnDestroy(): void {
+    this.flightHubNotification.unsubscribeFromHub();
+
+    this.subs.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
-  test(smth:any){
-    console.log('test test test')
-    //this.flightHubNotification.flightStarteddNotificationEmitter?.unsubscribe();
-    
+  async ngOnInit(): Promise<void> {
+    await this.flightHubNotification.startConnection();
+    this.points = await this.flightHubNotification.getConstructions();
+
+    this.flightHubNotification.initPilotEnteredListener();
+    this.flightHubNotification.pilotEntered$.subscribe(pilotName => {
+      this.pilotName = pilotName;
+    })
+
   }
 
   isSettingsOpened = true;

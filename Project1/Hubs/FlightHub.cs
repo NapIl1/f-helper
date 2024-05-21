@@ -17,9 +17,15 @@ public partial class FlightHub : Hub
         _statisticsRepository = statisticsRepository;
     }
 
-    public override Task OnConnectedAsync()
+    public async override Task OnConnectedAsync()
     {
-        Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
-        return base.OnConnectedAsync();
+        await Groups.AddToGroupAsync(Context.ConnectionId, GroupName);
+        await base.OnConnectedAsync();
+    }
+
+    public async override Task OnDisconnectedAsync(Exception? exception)
+    {
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, GroupName);
+        await base.OnDisconnectedAsync(exception);
     }
 }

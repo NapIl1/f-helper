@@ -13,10 +13,12 @@ export class FlightHubService {
     private stepCompletedSubject = new Subject<Construction>();
     private flightStartedSubject = new Subject<FlightStartModel>();
     private flightEndedSubject = new Subject<FlightEndStats>();
+    private pilotEnteredSubject = new Subject<string>();
 
     public stepCompleted$ = this.stepCompletedSubject.asObservable();
     public flightStarted$ = this.flightStartedSubject.asObservable();
     public flightEnded$ = this.flightEndedSubject.asObservable();
+    public pilotEntered$ = this.pilotEnteredSubject.asObservable();
 
     private readonly FLIGHT_HUB_NAME = API_URL + "flightNotification";
     private hubConnection?: signalR.HubConnection;
@@ -36,6 +38,11 @@ export class FlightHubService {
                 .then(() => console.log('Connection started'))
                 .catch(err => console.log('Error while starting connection: ' + err))
         }
+    }
+
+    public async closeConnection(): Promise<void> {
+        await this.hubConnection?.stop();
+        this.hubConnection = undefined;
     }
 
     //#region constructions
@@ -64,7 +71,10 @@ export class FlightHubService {
 
     public async getNextFlightConstructionStep() {
         var res = await this.hubConnection?.invoke('GetNextStepNotification');
-        console.log(res);
+    }
+
+    public async pilotEntered(userName: string) {
+        await this.hubConnection?.invoke('PilotEnteredNotification', userName);
     }
 
     //#endregion
@@ -80,6 +90,13 @@ export class FlightHubService {
         this.hubConnection?.off('GetNextStepNotification');
         this.hubConnection?.off('FlightStartedNotification');
         this.hubConnection?.off('FlightEndedNotification');
+        this.hubConnection?.off('PilotEnteredNotification');
+    }
+
+    public initPilotEnteredListener(): void {
+        this.hubConnection?.on('PilotEnteredNotification', (pilotName: string) => {
+            this.pilotEnteredSubject.next(pilotName);
+        });
     }
 
     public initStepCompletedListener(): void {

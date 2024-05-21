@@ -6,8 +6,8 @@
                     Кращий результат
                 </h1>
                 <div  class="d-flex">
-                    <div *ngFor="let item of bestResults" class="d-flex">
-                        <div style="border: 1px solid black; text-align: center; height: 80px; margin-top: 10px; width: 100px; font-weight: bold;">
+                    <div *ngFor="let item of bestResults; let i = index" class="d-flex">
+                        <div *ngIf="i!=0" style="border: 1px solid black; text-align: center; height: 80px; margin-top: 10px; width: 100px; font-weight: bold;">
                             <div>
                                 {{item.pilotName}}
                             </div>
@@ -70,7 +70,10 @@
                     Пройдено {{pointsMy}} точок (зараховано {{ pointsCounted }} точок)
                 </div>
                 <div>
-                    Ваш час: {{myTime}} ms. <span class="text-danger">(+ 3с.)</span>
+                    Ваш час: {{myTime / 1000}} с. 
+                    
+                    <span *ngIf="timeDifference > 0"  class="text-danger">( +{{timeDifference / 1000}} с.)</span>
+                    <span *ngIf="timeDifference <= 0"  class="text-success">( {{timeDifference / 1000}} с.)</span>
                 </div>
             </div>
             
@@ -80,8 +83,8 @@
     <div class="row">
         <div class="col-12">
             <div>
-                <button class="btn btn-success" (click)="saveResults()">
-                    Зберегти результат
+                <button class="btn btn-success" (click)="endFlight()">
+                    Закінчити
                 </button>
             </div>
         </div>

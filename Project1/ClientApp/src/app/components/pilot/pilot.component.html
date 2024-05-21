@@ -1,5 +1,5 @@
 <div style="margin-top: 10vh;">
-    <div *ngIf="!isFinished">
+    <div>
         <div class="row">
             <div class="col-12">
                 <div class="d-flex justify-content-center">
@@ -18,92 +18,5 @@
             </div>
         </div>
     </div>
-    <!-- <div *ngIf="isFinished">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <th>
-                                    ID
-                                </th>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Color
-                                </th>
-                                <th>
-                                    Number
-                                </th>
-                                <th>
-                                    Best Time
-                                </th>
-                                <th>
-                                    Nickname
-                                </th>
-                                
- 
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let res of result">
-                                    <td>
-                                        {{point.id}}
-                                    </td>
-                                    
-    
-                                    <td >
-                                        {{ res.point.name }}
-                                    </td>
-
-    
-                                    <td >
-                                        {{ res.point.color }}
-                                    </td>
-     
-                                    
-                                    <td >
-                                        {{ res.point.color }}
-                                    </td>
-
-                                    <td >
-                                        {{ res.point.bestResultTime }}
-                                        <span *ngIf="res.difference > 0" style="color: red"> 
-                                            (+{{ res.difference }})
-                                        </span>
-                                        <span *ngIf="res.difference < 0" style="color: green"> 
-                                            ({{ res.difference }})
-                                        </span>
-                                    </td>
-
-                                    <td >
-                                        
-                                        {{ res.point.bestResultPilot }} 
-                                    </td>
-    
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer">
-                        Total {{ total }}
-                        <br>
-                        Mytotal: {{ totalMy }}
-                        <span *ngIf="totalDiff > 0" style="color: red"> 
-                            (+{{ totalDiff }})
-                        </span>
-                        <span *ngIf="totalDiff < 0" style="color: green"> 
-                            ({{ totalDiff }})
-                        </span>
-                        Score: <span style="color: green">Відмінно</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
     
 </div>

@@ -1,12 +1,21 @@
 <div style="margin-top: 10vh;">
-    <div class="row">
+
+    <h1 *ngIf="!pilotName"class="text-center bg-danger p-2">
+        Чекаємо пілота...
+    </h1>
+
+    <h1 *ngIf="pilotName" class="text-center bg-success p-2">
+        Пілот {{pilotName}} готовий.
+    </h1>
+
+    <div class="row mt-2">
         <div class="col-12">
             <div class="d-flex justify-content-around">
                 <button style="font-size: 42px;" class="btn btn-primary" (click)="openSettings()">
                     Налаштування
                 </button>
     
-                <button style="font-size: 42px;" class="btn btn-primary" (click)="start()">
+                <button [disabled]="pathLength<=0 || !pilotName" style="font-size: 42px;" class="btn btn-primary" (click)="start()">
                     Почати програму
                 </button>
             </div>
@@ -141,11 +150,6 @@
                       type="text"
                       class="form-control"
                     />
-                </div>
-                <div >
-                    <button class="btn btn-primary w-100" (click)="setPathLenght()">
-                        Підтвердити
-                    </button>
                 </div>
             </div>
         </div>
