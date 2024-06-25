@@ -6,6 +6,8 @@ export interface Construction{
     color?: string,
     description?: string,
     constructionType?: string,
+    x?: string,
+    y?: string,
     isEnabled?: boolean    
 }
 

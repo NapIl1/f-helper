@@ -96,6 +96,8 @@ public class ConstructionRepository : IConstructionRepository
         oldVersion.name = newVersion.name;
         oldVersion.number = newVersion.number;
         oldVersion.constructionType = newVersion.constructionType;
+        oldVersion.x = newVersion.x;
+        oldVersion.y = newVersion.y;
         oldVersion.isEnabled = newVersion.isEnabled;
     }
 }

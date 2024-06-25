@@ -47,6 +47,7 @@ export class InstructorComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     await this.flightHubNotification.startConnection();
     this.points = await this.flightHubNotification.getConstructions();
+    this.drawPoints();
 
     this.flightHubNotification.initPilotEnteredListener();
     this.flightHubNotification.pilotEntered$.subscribe(pilotName => {
@@ -68,7 +69,17 @@ export class InstructorComponent implements OnInit, OnDestroy {
   }
 
   async savePoint(id: string | undefined) {
-    await this.flightHubNotification.updateConstruction(this.points?.find(x => x.constructionId == this.editId));
+    const point = this.points?.find(x => x.constructionId == this.editId);
+    if (point && this.pointX && this.pointY) {
+      point.x = this.pointX;
+      point.y = this.pointY;
+    }
+
+    await this.flightHubNotification.updateConstruction(point);
+    
+
+    this.deleteAllPoints();
+    this.drawPoints();
 
     this.editId = '';
   }
@@ -87,6 +98,14 @@ export class InstructorComponent implements OnInit, OnDestroy {
       description: this.description,
       isEnabled: true,
     };
+
+    if (this.pointX && this.pointY && this.pointObj) {
+      point.x = this.pointX;
+      point.y = this.pointY;
+    } else {
+      alert("Виберіть точку на мапі");
+      return;
+    }
 
     this.points.push(point);
 
@@ -116,7 +135,88 @@ export class InstructorComponent implements OnInit, OnDestroy {
 
   setPathLenght() {
     console.log("terter");
-
   }
+
+  pointX?: string = undefined;
+  pointY?: string = undefined;
+  pointObj: any = null;
+
+  private deleteSelectedPoint(): void {
+    const map = document.getElementById("intMap");
+
+    if (map) {
+
+      if(this.pointObj) {
+        map.removeChild(this.pointObj);
+        this.pointX = undefined;
+        this.pointY = undefined;
+      }
+    }
+  }
+
+  private deleteAllPoints():void {
+    const map = document.getElementById("intMap");
+
+    if (map) {
+      while (map.firstChild) {
+
+        if(map.lastChild) {
+          map.removeChild(map.lastChild);
+        }
+      }
+    }
+
+    this.pointObj = undefined;
+    
+  }
+
+  private drawPoints():void {
+    const map = document.getElementById("intMap");
+
+    if (map) {
+      this.points?.forEach(p => {
+        if(p.x && p.y) {
+
+          const pObj = document.createElement('div');
+          pObj.style.cssText = `width: 10px; height: 10px; border-radius: 50%; background-color: red; position: absolute; top: ${+p.y-5}px; left: ${+p.x-5}px; color: white;`;
+          pObj.innerHTML = `${p.number} ${p.name}`
+          map.appendChild(pObj);
+
+        }
+      });
+    }
+
+    
+  }
+
+  selectPoint(event: any) {
+    const map = document.getElementById("intMap");
+
+    if (map) {
+
+      this.deleteSelectedPoint();
+
+      var rect = map?.getBoundingClientRect();
+
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      
+      this.pointObj = document.createElement('div');
+      this.pointObj.style.cssText = `width: 10px; height: 10px; border-radius: 50%; background-color: yellow; position: absolute; top: ${y-5}px; left: ${x-5}px`;
+      map.appendChild(this.pointObj);
+
+      this.pointX = x.toString();
+      this.pointY = y.toString();
+    }
+  }
+
+  private getRandomColor():string {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 }
