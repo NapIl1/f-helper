@@ -51,6 +51,9 @@
                             <th>
                                 Редагування
                             </th>
+                            <th>
+                                Скопіювати
+                            </th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let point of points">
@@ -103,6 +106,13 @@
                                         Зберегти
                                     </button>
                                 </td>
+
+                                <td>
+                                    <button (click)="makeCopy(point)">
+                                        Копіювати
+                                    </button>
+                                </td>
+
                             </tr>
                             <tr>
                                 <!-- <td>
@@ -130,7 +140,7 @@
                                 
                                 <td>
                                     <button class="btn btn-success" (click)="addPoint()">
-                                        Add
+                                        Створити
                                     </button>
                                 </td>
                             </tr>

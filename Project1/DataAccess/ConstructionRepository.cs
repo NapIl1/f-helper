@@ -55,6 +55,15 @@ public class ConstructionRepository : IConstructionRepository
         // await using var db = MongoDbContext.Create(client.GetDatabase(_databaseName));
         construction._id = ObjectId.GenerateNewId();
         await _mongoDbContext.Constructions.AddAsync(construction);
+
+        var sameIdPoints = await _mongoDbContext.Constructions.Where(x => x.name == construction.name && x.constructionId != construction.constructionId).ToListAsync();
+
+        foreach (var point in sameIdPoints)
+        {
+            point.x = construction.x;
+            point.y = construction.y;
+        }
+
         await _mongoDbContext.SaveChangesAsync();
     }
 
@@ -70,6 +79,15 @@ public class ConstructionRepository : IConstructionRepository
         }
 
         MapConstruction(prevVersion, construction);
+        
+        var sameIdPoints = await _mongoDbContext.Constructions.Where(x => x.name == construction.name && x.constructionId != construction.constructionId).ToListAsync();
+
+        foreach (var point in sameIdPoints)
+        {
+            point.x = construction.x;
+            point.y = construction.y;
+        }
+
         await _mongoDbContext.SaveChangesAsync();
     }
 

@@ -156,6 +156,46 @@ export class FlightComponent implements OnInit, OnDestroy {
     this.pathLength = startModel.length;
     this.steps.current = startModel.constructions[0];
     this.steps.next = startModel.constructions[1];
+
+    this.drawMap();
+  }
+
+  private drawMap(): any {
+    const map = document.getElementById("intMap1");
+
+    if (map) {
+      while (map.firstChild) {
+        if(map.lastChild) {
+          map.removeChild(map.lastChild);
+        }
+      }
+
+      // if (this.steps.prev && this.steps.prev.y && this.steps.prev.x) {
+      //   const prevObj = document.createElement('div');
+      //   prevObj.style.cssText = `width: 20px; height: 20px; border-radius: 50%; background-color: green; position: absolute; top: ${+this.steps.prev.y-10}px; left: ${+this.steps.prev.x-10}px; color: white; padding-top: 10px;`;
+      //   // currentObj.innerHTML = `${this.steps.current.name}`
+      //   map.appendChild(prevObj);
+      // }
+
+      if (this.steps.current &&this.steps.current!.y && this.steps.current!.x) {
+        const currentObj = document.createElement('div');
+        currentObj.style.cssText = `width: 20px; height: 20px; border-radius: 50%; background-color: red; position: absolute; top: ${+this.steps.current.y-10}px; left: ${+this.steps.current.x-10}px; color: white; padding-top: 10px; z-index:1;`;
+        currentObj.classList.add('map-point');
+
+        // currentObj.innerHTML = `${this.steps.current.name}`
+        map.appendChild(currentObj);
+      }
+
+      if (this.steps.next && this.steps.next.y && this.steps.next.x) {
+        const nextObj = document.createElement('div');
+        nextObj.style.cssText = `width: 20px; height: 20px; border-radius: 50%; background-color: yellow; position: absolute; top: ${+this.steps.next!.y-10}px; left: ${+this.steps.next!.x-10}px; color: white; padding-top: 10px;`;
+
+        // nextObj.innerHTML = `${this.steps.next.name}`
+        map.appendChild(nextObj);
+      }
+    
+    }
+
   }
 
   private changeSteps(nextConstruction: Construction) {
@@ -170,6 +210,9 @@ export class FlightComponent implements OnInit, OnDestroy {
     } else {
       this.steps.next = nextConstruction;
     }
+
+
+    this.drawMap();
 
     this.isLoading = false;
   }

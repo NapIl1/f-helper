@@ -73,8 +73,16 @@ export class InstructorComponent implements OnInit, OnDestroy {
     if (point && this.pointX && this.pointY) {
       point.x = this.pointX;
       point.y = this.pointY;
+
+      const sameIdPoints =  this.points?.filter(x => x.name == point.name && x.constructionId != point.constructionId);
+
+      sameIdPoints?.forEach(p => {
+        p.x = point.x;
+        p.y = point.y;
+      });
     }
 
+   
     await this.flightHubNotification.updateConstruction(point);
     
 
@@ -102,6 +110,13 @@ export class InstructorComponent implements OnInit, OnDestroy {
     if (this.pointX && this.pointY && this.pointObj) {
       point.x = this.pointX;
       point.y = this.pointY;
+
+      const sameIdPoints =  this.points?.filter(x => x.name == point.name && x.constructionId != point.constructionId);
+
+      sameIdPoints?.forEach(p => {
+        p.x = point.x;
+        p.y = point.y;
+      });
     } else {
       alert("Виберіть точку на мапі");
       return;
@@ -110,6 +125,18 @@ export class InstructorComponent implements OnInit, OnDestroy {
     this.points.push(point);
 
     await this.flightHubNotification.addConstruction(point);
+
+    this.deleteAllPoints();
+    this.drawPoints();
+    this.color = '';
+    this.name = ''
+    this.number = 0;
+    this.constructionType = '';
+    this.description = '';
+    this.pointX = undefined;
+    this.pointY = undefined;
+    this.pointObj = undefined;
+    this.isCopy = false;
   }
   // START
 
@@ -137,6 +164,20 @@ export class InstructorComponent implements OnInit, OnDestroy {
     console.log("terter");
   }
 
+  isCopy = false;
+
+  makeCopy(point: Construction): void {
+    this.color = point.color!;
+    this.name = point.name!;
+    this.number = point.number!;
+    this.constructionType = point.constructionType!;
+    this.description = point.description!;
+    this.pointX = point.x;
+    this.pointY = point.y;
+    this.pointObj = {};
+    this.isCopy = true;
+  }
+
   pointX?: string = undefined;
   pointY?: string = undefined;
   pointObj: any = null;
@@ -146,7 +187,7 @@ export class InstructorComponent implements OnInit, OnDestroy {
 
     if (map) {
 
-      if(this.pointObj) {
+      if(this.pointObj && !this.isCopy) {
         map.removeChild(this.pointObj);
         this.pointX = undefined;
         this.pointY = undefined;
@@ -173,15 +214,18 @@ export class InstructorComponent implements OnInit, OnDestroy {
   private drawPoints():void {
     const map = document.getElementById("intMap");
 
+    const pastNames: string[] = [];
+
     if (map) {
       this.points?.forEach(p => {
-        if(p.x && p.y) {
+        if(p.x && p.y && !pastNames.includes(p.name!)) {
 
           const pObj = document.createElement('div');
-          pObj.style.cssText = `width: 10px; height: 10px; border-radius: 50%; background-color: red; position: absolute; top: ${+p.y-5}px; left: ${+p.x-5}px; color: white;`;
-          pObj.innerHTML = `${p.number} ${p.name}`
+          pObj.style.cssText = `width: 10px; height: 10px; border-radius: 50%; background-color: red; position: absolute; top: ${+p.y-5}px; left: ${+p.x-5}px; color: white; padding-top: 10px;`;
+          pObj.innerHTML = `${p.name}`
           map.appendChild(pObj);
 
+          pastNames.push(p.name!);
         }
       });
     }

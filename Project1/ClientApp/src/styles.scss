@@ -1,2 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+.map-point {
+    animation: map-point-flickering 1500ms infinite;
+}
+
+@keyframes map-point-flickering {
+    0% {
+        background-color: transparent;
+        /* Start with transparent border */
+    }
+
+    50% {
+        background-color: red;
+        /* Halfway through, make the border visible */
+    }
+
+    100% {
+        background-color: transparent
+    }
+}

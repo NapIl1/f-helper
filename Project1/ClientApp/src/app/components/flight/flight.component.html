@@ -1,5 +1,5 @@
-<div style="margin-top: 10vh;">
-    <div class="row" *ngIf="userName">
+<div style="margin-top: 172px;">
+    <div class="row" *ngIf="userName && !isStarted">
         <div class="col-12">
             <div class="d-flex justify-content-center">
                 <h1>
@@ -13,12 +13,18 @@
             Очікуємо інструктора
         </h1>
     </div>
-    <div *ngIf="isStarted">
+    <div class="fixed-header" *ngIf="isStarted">
         <h1 class="text-center">
             Крок {{currentStep}} з {{pathLength}}
         </h1>
+        <h1 class="text-center">
+            Точка: {{steps.current?.number}} {{steps.current?.color}}
+        </h1>
+        <button [disabled]="isLoading" style="font-size: 44px;" *ngIf="role === ROLES.PILOT" class="btn btn-success w-100" (click)="makeStep()">
+            Пролетів
+        </button>
     </div>
-    <div *ngIf="isStarted" class="row">
+    <!-- <div *ngIf="isStarted" class="row">
         <div class="col-12">
             <div class="d-flex justify-content-around">
                 
@@ -61,7 +67,18 @@
 
             </div>
         </div>
+    </div> -->
+    
+    <div  class="row">
+        <div class="col-12">
+            <div class="mt-2 mb-2">
+                <div id="intMap1" style="background-image: url(../../../assets/images/map.jpg); width: 1280px; height: 922px; background-repeat: no-repeat; position: relative; cursor: pointer;">
+        
+                </div>
+            </div>
+        </div>
     </div>
+
     <!-- Replace role -->
     <div class="row mt-5" *ngIf="role === ROLES.PILOT">
         <div class="col-12">
