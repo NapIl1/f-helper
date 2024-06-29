@@ -1,0 +1,47 @@
+name: Trigger auto deployment for fpv-training-location
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ umka ]
+    paths:
+    - '**'
+    - '.github/workflows/fpv-training-location-AutoDeployTrigger-9b8ba3ea-3d85-4d9c-b665-641a99a7dd4f.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.FPVTRAININGLOCATION_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.FPVTRAININGLOCATION_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.FPVTRAININGLOCATION_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: ozonwestrg.azurecr.io
+          registryUsername: ${{ secrets.FPVTRAININGLOCATION_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.FPVTRAININGLOCATION_REGISTRY_PASSWORD }}
+          containerAppName: fpv-training-location
+          resourceGroup: ozon-west
+          imageToBuild: ozonwestrg.azurecr.io/fpv-training-location:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
