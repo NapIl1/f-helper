@@ -28,7 +28,7 @@ builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
         {
             builder.AllowAnyHeader()
                    .AllowAnyMethod()
-                   //.WithOrigins("http://localhost:5109", "http://localhost:44436", "https://fpv-training-location.ambitioussmoke-69ddee54.westeurope.azurecontainerapps.io")
+                   .WithOrigins("http://localhost:5109", "http://localhost:44436", "https://fpv-training-location.ambitioussmoke-69ddee54.westeurope.azurecontainerapps.io")
                    .SetIsOriginAllowed((host) => true);
         }));
 
