@@ -8,6 +8,7 @@
     <SpaProxyServerUrl>http://localhost:44491</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
+     <Configurationss>Debug;Umka;Release</Configurationss>
   </PropertyGroup>
 
   <ItemGroup>
@@ -66,4 +67,12 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Umka'">
+      <ItemGroup>
+        <Content Remove="appsettings.Development.json" />
+      </ItemGroup>
+    </When>
+  </Choose>
 </Project>

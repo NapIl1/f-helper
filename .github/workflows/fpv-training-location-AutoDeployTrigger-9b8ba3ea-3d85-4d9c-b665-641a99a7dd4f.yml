@@ -42,7 +42,9 @@ jobs:
           resourceGroup: ozon-west
           dockerfilePath: ./Dockerfile
           imageToBuild: ozonwestrg.azurecr.io/fpv-training-location:${{ github.sha }}
-          _buildArgumentsKey_: |
-            _buildArgumentsValues_
+          buildArguments: |
+            "BUILD_CONFIG=Umka"
+          environmentVariables: |
+            "ASPNETCORE_ENVIRONMENT=Umka"
 
 
