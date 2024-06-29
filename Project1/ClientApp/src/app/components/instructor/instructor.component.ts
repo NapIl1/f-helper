@@ -221,7 +221,7 @@ export class InstructorComponent implements OnInit, OnDestroy {
         if(p.x && p.y && !pastNames.includes(p.name!)) {
 
           const pObj = document.createElement('div');
-          pObj.style.cssText = `width: 10px; height: 10px; border-radius: 50%; background-color: red; position: absolute; top: ${+p.y-5}px; left: ${+p.x-5}px; color: white; padding-top: 10px;`;
+          pObj.style.cssText = `width: 10px; height: 10px; background-color: red; position: absolute; top: ${+p.y-5}px; left: ${+p.x-5}px; color: white; padding-top: 10px;`;
           pObj.innerHTML = `${p.name}`
           map.appendChild(pObj);
 
