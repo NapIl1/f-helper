@@ -23,6 +23,15 @@ builder.Services.AddDbContext<MongoDbContext>(options =>
 builder.Services.AddScoped<IConstructionRepository, ConstructionRepository>();
 builder.Services.AddScoped<IStatisticsRepository, StatisticRepository>();
 
+builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+        builder =>
+        {
+            builder.AllowAnyHeader()
+                   .AllowAnyMethod()
+                   //.WithOrigins("http://localhost:5109", "http://localhost:44436", "https://fpv-training-location.ambitioussmoke-69ddee54.westeurope.azurecontainerapps.io")
+                   .SetIsOriginAllowed((host) => true);
+        }));
+
 BsonSerializer.RegisterSerializer(new StringObjectIdConverter());
 
 var app = builder.Build();
@@ -39,15 +48,8 @@ app.Use(async (context, next) =>
 
 app.UseStaticFiles();
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
+app.UseCors("CorsPolicy");
 app.MapHub<FlightHub>("/flightNotification");
-app.UseCors(policy => policy.SetIsOriginAllowed(origin => true) // Allow any origin
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
-//.WithExposedHeaders("Content-Disposition"));
 
 app.UseRouting();
 

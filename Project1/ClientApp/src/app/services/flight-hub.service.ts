@@ -31,7 +31,11 @@ export class FlightHubService {
     public async startConnection(): Promise<void> {
         if (!this.hubConnection){
             this.hubConnection = new signalR.HubConnectionBuilder()
-                .withUrl(this.FLIGHT_HUB_NAME)
+                .withUrl(this.FLIGHT_HUB_NAME, {
+                    skipNegotiation: true, // Skip negotiation for non-ASP.NET Core SignalR
+                    transport: signalR.HttpTransportType.WebSockets // Use WebSockets if supported
+                })
+                .configureLogging(signalR.LogLevel.Information)
                 .build();
 
             await this.hubConnection.start()
