@@ -44,13 +44,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.MapHub<FlightHub>("/flightNotification");
-app.UseCors(policy => policy.AllowAnyOrigin()
-    .AllowCredentials()
-    .WithOrigins("http://localhost:44436")
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .SetIsOriginAllowed((host)=> true)
-    .WithExposedHeaders("Content-Disposition"));
+app.UseCors(policy => policy.SetIsOriginAllowed(origin => true) // Allow any origin
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+//.WithExposedHeaders("Content-Disposition"));
 app.UseAuthorization();
 app.MapControllers();
 
