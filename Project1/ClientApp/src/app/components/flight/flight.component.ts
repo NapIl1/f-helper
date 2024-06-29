@@ -179,7 +179,7 @@ export class FlightComponent implements OnInit, OnDestroy {
 
       if (this.steps.current &&this.steps.current!.y && this.steps.current!.x) {
         const currentObj = document.createElement('div');
-        currentObj.style.cssText = `width: 20px; height: 20px; border-radius: 50%; background-color: red; position: absolute; top: ${+this.steps.current.y-10}px; left: ${+this.steps.current.x-10}px; color: white; padding-top: 10px; z-index:1;`;
+        currentObj.style.cssText = `width: 20px; height: 20px; background-color: red; position: absolute; top: ${+this.steps.current.y-10}px; left: ${+this.steps.current.x-10}px; color: white; padding-top: 10px; z-index:1;`;
         currentObj.classList.add('map-point');
 
         // currentObj.innerHTML = `${this.steps.current.name}`
@@ -188,7 +188,7 @@ export class FlightComponent implements OnInit, OnDestroy {
 
       if (this.steps.next && this.steps.next.y && this.steps.next.x) {
         const nextObj = document.createElement('div');
-        nextObj.style.cssText = `width: 20px; height: 20px; border-radius: 50%; background-color: yellow; position: absolute; top: ${+this.steps.next!.y-10}px; left: ${+this.steps.next!.x-10}px; color: white; padding-top: 10px;`;
+        nextObj.style.cssText = `width: 20px; height: 20px; background-color: yellow; position: absolute; top: ${+this.steps.next!.y-10}px; left: ${+this.steps.next!.x-10}px; color: white; padding-top: 10px;`;
 
         // nextObj.innerHTML = `${this.steps.next.name}`
         map.appendChild(nextObj);
