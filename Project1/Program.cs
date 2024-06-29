@@ -38,7 +38,6 @@ app.Use(async (context, next) =>
 });
 
 app.UseStaticFiles();
-app.UseRouting();
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -49,6 +48,9 @@ app.UseCors(policy => policy.SetIsOriginAllowed(origin => true) // Allow any ori
             .AllowAnyHeader()
             .AllowCredentials());
 //.WithExposedHeaders("Content-Disposition"));
+
+app.UseRouting();
+
 app.UseAuthorization();
 app.MapControllers();
 
